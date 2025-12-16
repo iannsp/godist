@@ -9,3 +9,4 @@ This is meant to practice both go and math distributions.
 ## Distributions
 
 - [x] [Binomial](docs/binomial.md)
+- [ ] [Normal](docs/normal.md)
