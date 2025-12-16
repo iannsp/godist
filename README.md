@@ -1,3 +1,5 @@
+[![codecov](https://codecov.io/github/iannsp/godist/graph/badge.svg?token=I7K6LVPW50)](https://codecov.io/github/iannsp/godist)
+
 # Probability distributions in go 
 
 Implementation of mathematical distribution algorithms as exercise.
