@@ -68,14 +68,16 @@ Queremos saber qual é a probabilidade de o palete ser devolvido? Sabendo que s�
 func TestProbabilidadePaleteSerDevolvido(t *testing.T) {
 
 	// A abordagem escolhida é a da [Probabilidade Complementar](https://pt.wikipedia.org/wiki/Evento_complementar) para o problema é utilizar a chance de 0 defeitos(todos os 20 sacos dentro do peso) e de 1 defeito (1 saco abaixo do limite de peso) e extrair a chance de 2 ou mais defeitos.
-
-	probabilidadeZeroDefeito, err := godist.BinomialPMF(numeroSacosPorPalete, probabilidadePesoIdeal, 0)
+    binomial, _ := godist.NewBinomial( numeroSacosPorPalete, probabilidadePesoIdeal)
+	probabilidadeZeroDefeito, err := binomial.PMF(0)
 
 	if err != nil {
 		t.Errorf("Falha ao Calcular PMF. %s", err.Error())
 	}
 
-	probabilidadeUmDefeito, err := godist.BinomialPMF(numeroSacosPorPalete, probabilidadePesoIdeal, 1)
+
+    binomial, _ = godist.NewBinomial(numeroSacosPorPalete, probabilidadePesoIdeal)
+	probabilidadeUmDefeito, err := binomial.PMF(1)
 
 	if err != nil {
 		t.Errorf("Falha ao Calcular PMF. %s", err.Error())

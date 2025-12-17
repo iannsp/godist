@@ -9,7 +9,24 @@ import (
 	"errors"
 	"math"
 )
+type Binomial struct{
+    trials int
+    probSuccess float64
+}
 
+
+func NewBinomial(trials int, probSuccess float64) (Binomial, error) {
+
+    if probSuccess < 0 || probSuccess > 1 {
+        return Binomial{}, errors.New("Probability Success must be between 0 and 1")
+    }
+
+    if trials < 0 {
+        return Binomial{}, errors.New("Number of Trials must be non negative")
+    }
+
+    return Binomial{ trials: trials, probSuccess: probSuccess}, nil
+}
 // BinomialCoefficient computes "n choose k".
 //
 // I use factorial method in the first implementation but
@@ -17,12 +34,11 @@ import (
 // allowing for higher n than the factorial method.
 //
 // parameters:
-// n: Number of trials
 // k: Number of sucesses
-func BinomialCoefficient(n, k int) (int, error) {
-
-	if k > n || k < 0 {
-		err := errors.New("k must be between 0 and n")
+func (b *Binomial)Coefficient(k int) (int, error) {
+    n := b.trials
+	if k > b.trials || k < 0 {
+		err := errors.New("k must be between 0 and number of Trials")
 		return 0, err
 	}
 
@@ -48,23 +64,18 @@ func BinomialCoefficient(n, k int) (int, error) {
 // P(X=k) = C(n,k) * p^k * (1-p)^(n-k)
 //
 // Parameters:
-// n: number of trials
-// p: probability of success in a single trial (0 <= p <= 1)
 // k: number of successes
-func BinomialPMF(n int, p float64, k int) (float64, error) {
-	if p < 0 || p > 1 {
-		return 0, errors.New("probability p must be between 0 and 1")
-	}
+func (b *Binomial)PMF(k int) (float64, error) {
 
-	binomCoeff, err := BinomialCoefficient(n, k)
+	binomCoeff, err := b.Coefficient(k)
 	if err != nil {
 		return 0, err
 	}
 
-	q := 1 - p
+	q := 1 - b.probSuccess
 
-	pk := math.Pow(p, float64(k))
-	qn := math.Pow(q, float64(n-k))
+	pk := math.Pow(b.probSuccess, float64(k))
+	qn := math.Pow(q, float64(b.trials-k))
 
 	return float64(binomCoeff) * pk * qn, nil
 }

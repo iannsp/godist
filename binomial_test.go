@@ -36,7 +36,8 @@ func TestBinomialCoefficient(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := BinomialCoefficient(tt.n, tt.k)
+            b, _ := NewBinomial(tt.n, 0.0)
+			got, err := b.Coefficient(tt.k)
 
 			// Check Error Expectation
 			if tt.expectError {
@@ -91,7 +92,8 @@ func TestBinomialPMF(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := BinomialPMF(tt.n, tt.p, tt.k)
+            b, _:= NewBinomial(tt.n, tt.p)
+			got, err := b.PMF(tt.k)
 
 			if tt.expectError {
 				if err == nil {
