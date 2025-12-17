@@ -27,6 +27,7 @@ func NewBinomial(trials int, probSuccess float64) (Binomial, error) {
 
     return Binomial{ trials: trials, probSuccess: probSuccess}, nil
 }
+
 // BinomialCoefficient computes "n choose k".
 //
 // I use factorial method in the first implementation but
@@ -78,4 +79,37 @@ func (b *Binomial)PMF(k int) (float64, error) {
 	qn := math.Pow(q, float64(b.trials-k))
 
 	return float64(binomCoeff) * pk * qn, nil
+}
+
+// CDF (Cumulative Distribution Function)
+// sum PMFs to obtaion the answer to "What is the probability of have Max(k) 
+// success in n trials?
+func (b *Binomial)CDF(k int) (float64, error) {
+    if k < 0 {
+        return 0.0, nil
+    }
+
+    if k >= b.trials {
+        return 1.0, nil
+    }
+
+    cumulativeProbability := 0.0
+    for i:= 0; i <= k; i++ {
+            iProb, err := b.PMF(i)
+            if err != nil {
+                return 0, err
+            }
+            cumulativeProbability += iProb
+    }
+    return cumulativeProbability, nil
+}
+
+// Variance returns Var(X) = n * p * (1-p)
+func (b *Binomial) Variance() float64 {
+	return float64(b.trials) * b.probSuccess * (1 - b.probSuccess)
+}
+
+// Mean returns the expected value E[X] = n * p
+func (b *Binomial) Mean() float64 {
+	return float64(b.trials) * b.probSuccess
 }

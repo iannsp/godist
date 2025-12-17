@@ -98,3 +98,16 @@ func TestProbabilidadePaleteSerDevolvido(t *testing.T) {
 		t.Errorf("Falha Calculo PRej. Expected %f, got %f", expectedProbabilidadeRejeicaoPalete, probabilidadeRejeicaoPalete)
 	}
 }
+
+func TestProbabilidadePaleteSerDevolvidoUsandoBinomialCDF(t *testing.T) {
+
+	// A abordagem escolhida é a da [Probabilidade Complementar](https://pt.wikipedia.org/wiki/Evento_complementar) para o problema é utilizar Binomial CDF de 1 .
+    binomial, _ := godist.NewBinomial( numeroSacosPorPalete, probabilidadePesoIdeal)
+
+	probabilidadeAceitacaoPalete, _ := binomial.CDF(1)
+	probabilidadeRejeicaoPalete := (1- probabilidadeAceitacaoPalete) * 100
+    fmt.Printf("aceitacao %f", probabilidadeAceitacaoPalete)
+	if math.Abs(probabilidadeRejeicaoPalete-expectedProbabilidadeRejeicaoPalete) > 0.001 {
+		t.Errorf("Falha Calculo PRej. Expected %f, got %f", expectedProbabilidadeRejeicaoPalete, probabilidadeRejeicaoPalete)
+	}
+}
