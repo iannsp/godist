@@ -31,6 +31,7 @@ func (n *Normal) PDF(v float64) float64 {
 // CDF (Cumulative Distribution Function)
 // Calculate the probability that a random variable is Less than or Equal to v
 // using math.Erf
+
 func (n *Normal) CDF(v float64) float64 {
 	return 0.5 * (1 + n.SampleMeanZ(v))
 }
@@ -38,7 +39,7 @@ func (n *Normal) CDF(v float64) float64 {
 func (n *Normal) Less(v float64) float64 {
 	return n.CDF(v)
 }
-func (n *Normal) Grater(v float64) float64 {
+func (n *Normal) Greater(v float64) float64 {
 	return 1 - n.CDF(v)
 }
 
