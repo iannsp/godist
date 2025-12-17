@@ -9,4 +9,12 @@ This is meant to practice both go and math distributions.
 ## Distributions
 
 - [x] [Binomial](docs/binomial.md)
-- [ ] [Normal](docs/normal.md)
+- [x] [Normal](docs/normal.md)
+- [ ] [Poisson](docs/poisson.md)
+- [ ] [Exponential](docs/exponential.md)
+- [ ] [Log-Normal](docs/log-normal.md)
+- [ ] [Geométrica](docs/geometrica.md)
+- [ ] [Pareto](docs/pareto.md)
+- [ ] [Uniforme](docs/uniforme.md)
+- [ ] [Beta](docs/beta.md)
+- [ ] [Weibull](docs/weibull.md)

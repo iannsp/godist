@@ -36,31 +36,31 @@ func NewBinomial(trials int, probSuccess float64) (Binomial, error) {
 //
 // parameters:
 // k: Number of sucesses
-func (b *Binomial)Coefficient(k int) (int, error) {
+func (b *Binomial)Coefficient(k int) (float64, error) {
     n := b.trials
 	if k > b.trials || k < 0 {
 		err := errors.New("k must be between 0 and number of Trials")
 		return 0, err
 	}
 
-	// use identity property to optimize. C(n, k) == C(n, n-k)
+    // use identity property to optimize. C(n, k) == C(n, n-k)
 	if k > n/2 {
 		k = n - k
 	}
 
-	result := 1
+	logResult := b.logCoefficient(k)
 
-	for i := 1; i <= k; i++ {
-		if result > math.MaxInt64/(n-i+1) {
-			return 0, errors.New("integer overflow")
-		}
-
-		result = result * (n - i + 1)
-		result = result / i
-	}
-	return result, nil
+	return math.Exp(logResult), nil
 }
 
+func (b *Binomial)logCoefficient(k int) float64 {
+
+	lnN,_ := math.Lgamma(float64(b.trials + 1))
+	lnK,_ := math.Lgamma(float64(k + 1))
+	lnNK,_ := math.Lgamma(float64(b.trials - k + 1))
+
+	return lnN - lnK - lnNK
+}
 // BinomialPMF calculates the probability of exactly k successes in n independent trials.
 // P(X=k) = C(n,k) * p^k * (1-p)^(n-k)
 //

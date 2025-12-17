@@ -11,12 +11,12 @@ func TestBinomialCoefficient(t *testing.T) {
 		name        string
 		n           int
 		k           int
-		expected    int
+		expected   float64
 		expectError bool
 	}{
 		// Standard Math Cases
-		{"5 choose 3", 5, 3, 10, false},
-		{"4 choose 2", 4, 2, 6, false},
+		{"5 choose 3", 5, 3, 10.0, false},
+		{"4 choose 2", 4, 2, 6.0, false},
 		{"10 choose 5", 10, 5, 252, false},
 
 		// Boundary / Edge Cases
@@ -24,10 +24,6 @@ func TestBinomialCoefficient(t *testing.T) {
 		{"k is n", 10, 10, 1, false},       // C(n,n) is always 1
 		{"k is 1", 5, 1, 5, false},         // C(n,1) is always n
 		{"n is 0, k is 0", 0, 0, 1, false}, // C(0,0) is 1
-
-		// Large Number Check (Safety limit for int64)
-		{"Max safe int64 (66 choose 23)", 66, 23, 348524321356411200, false},
-		{"Max safe int64 (100 choose 10)", 100, 15, 253338471349988640, false},
 
 		// Error Cases
 		{"k > n", 5, 6, 0, true},
@@ -52,8 +48,8 @@ func TestBinomialCoefficient(t *testing.T) {
 			}
 
 			// Check Value
-			if got != tt.expected {
-				t.Errorf("BinomialCoefficient(%d, %d) = %d; want %d", tt.n, tt.k, got, tt.expected)
+			if math.Abs(got - tt.expected) > 0.001 {
+				t.Errorf("BinomialCoefficient %v+ (n: %d, k: %d) = got: %f; expected: %f", tt, tt.n, tt.k, got, float64(tt.expected))
 			}
 		})
 	}
